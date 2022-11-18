@@ -78,6 +78,12 @@
        <height>425</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>server</string>
      </property>
@@ -89,6 +95,12 @@
         <width>69</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>address</string>
@@ -103,6 +115,12 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>port</string>
       </property>
@@ -116,6 +134,12 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>password</string>
       </property>
@@ -128,6 +152,13 @@
         <width>69</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+        <bold>false</bold>
+       </font>
       </property>
       <property name="text">
        <string>method</string>
@@ -172,6 +203,12 @@
         <height>28</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <item>
        <property name="text">
         <string>none</string>
@@ -212,6 +249,12 @@
         <height>20</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>remark</string>
       </property>
@@ -226,6 +269,12 @@
        <height>29</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>add</string>
      </property>
@@ -238,6 +287,12 @@
        <width>87</width>
        <height>29</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>delete</string>
@@ -252,6 +307,12 @@
        <height>29</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>copy</string>
      </property>
@@ -265,6 +326,12 @@
        <height>29</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>move up</string>
      </property>
@@ -277,6 +344,12 @@
        <width>87</width>
        <height>29</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>move down</string>
@@ -301,6 +374,12 @@
        <height>20</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>local port</string>
      </property>
@@ -313,6 +392,12 @@
        <width>87</width>
        <height>29</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>start</string>
@@ -327,6 +412,12 @@
        <height>29</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="text">
       <string>stop</string>
      </property>
@@ -339,6 +430,12 @@
        <width>87</width>
        <height>29</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Consolas</family>
+       <pointsize>10</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>apply</string>

@@ -10,6 +10,8 @@ public:
 
 public:
     void StartServer();
+	
+	void Test();
 };
 
 

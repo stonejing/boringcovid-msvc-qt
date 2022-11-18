@@ -32,34 +32,42 @@ protected:
 private:
     Ui::MainWindow *ui;
 
-    void PushButtonStartOnClick();
-
-    void CreateActions();
-    void CreateTrayIcon();
-
     using json = nlohmann::json;
     json json_config;
 
     int config_nums;
 
-    void StartServer();
-    void CancelConfigure();
-    void ApplyConfigure();
+    void Start();
+    void Stop();
+    void Apply();
 
     void WriteConfig();
     void ReadConfig();
 
-    void AddConfig();
-    void DeleteConfig();
+    void Add();
+    void Delete();
+    void Copy();
+    void MoveUp();
+    void MoveDown();
 
     void ChangeLabelText();
-    void AppendLog();
 
 private:
+    void CreateActions();
+    void CreateTrayIcon();
+
     QSystemTrayIcon *trayIcon;
     QMenu *trayIconMenu;
-
-    QAction *restoreAction;
+	
+	QAction *none;
+	QAction *pac;
+	QAction *global;
+	
+	QAction *autoStartAction;
+	QAction *aboutAction;
+	
+	QAction *minimizeAction;
+	QAction *restoreAction;
     QAction *quitAction;
 
 };

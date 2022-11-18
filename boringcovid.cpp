@@ -17,3 +17,9 @@ void BoringCovid::StartServer()
         qDebug() << "output of startserver.";
     }
 }
+
+void BoringCovid::Test()
+{
+	qDebug() << "This is a test";
+	return;
+}

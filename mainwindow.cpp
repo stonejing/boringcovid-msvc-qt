@@ -6,6 +6,7 @@
 #include <fstream>
 #include <QDebug>
 #include <QMessageBox>
+#include <QActionGroup>
 
 QPlainTextEdit* MainWindow::Log = nullptr;
 QTextEdit* MainWindow::TeLog = nullptr;
@@ -17,18 +18,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->pushButton_start, &QPushButton::clicked, this, &MainWindow::StartServer);
-    connect(ui->pushButton_stop, &QPushButton::clicked, this, &MainWindow::CancelConfigure);
-    connect(ui->pushButton_add, &QPushButton::clicked, this, &MainWindow::AddConfig);
+    connect(ui->pushButton_start, &QPushButton::clicked, this, &MainWindow::Start);
+    connect(ui->pushButton_stop, &QPushButton::clicked, this, &MainWindow::Stop);
+    connect(ui->pushButton_apply, &QPushButton::clicked, this, &MainWindow::Apply);
+    connect(ui->pushButton_add, &QPushButton::clicked, this, &MainWindow::Add);
+    connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::Delete);
     connect(ui->listWidget, &QListWidget::itemClicked, this, &MainWindow::ChangeLabelText);
-    connect(ui->pushButton_delete, &QPushButton::clicked, this, &MainWindow::DeleteConfig);
-    connect(ui->pushButton_apply, &QPushButton::clicked, this, &MainWindow::ApplyConfigure);
-    ReadConfig();
 
     CreateActions();
     CreateTrayIcon();
-
-    trayIcon->show();
+    ReadConfig();
 }
 
 MainWindow::~MainWindow()
@@ -54,9 +53,7 @@ void MainWindow::WriteConfig()
 {
     std::fstream fs;
     fs.open("config.json", std::fstream::in | std::fstream::out | std::fstream::trunc);
-
     fs << json_config << "\n";
-
     fs.close();
 }
 
@@ -79,7 +76,7 @@ void MainWindow::ReadConfig()
     fs.close();
 }
 
-void MainWindow::AddConfig()
+void MainWindow::Add()
 {
     QString server_address = ui->lineEdit_remote_address->text();
     int server_port = ui->lineEdit_remote_port->text().toInt();
@@ -92,13 +89,11 @@ void MainWindow::AddConfig()
         QString itemText = server_address + ":" + QString::number(server_port);
         newItem->setText(itemText);
         ui->listWidget->addItem(newItem);
-
         json_config["configs"][config_nums]["server_address"] = server_address.toStdString();
         json_config["configs"][config_nums]["server_port"] = server_port;
         json_config["configs"][config_nums]["password"] = password.toStdString();
         json_config["configs"][config_nums]["method"] = method.toStdString();
         config_nums++;
-
         WriteConfig();
     }
     else
@@ -107,7 +102,7 @@ void MainWindow::AddConfig()
     }
 }
 
-void MainWindow::DeleteConfig()
+void MainWindow::Delete()
 {
     int index = ui->listWidget->currentRow();
 
@@ -115,42 +110,121 @@ void MainWindow::DeleteConfig()
     {
         json_config["configs"].erase(index);
         ui->listWidget->takeItem(index);
-
         config_nums--;
-
         ChangeLabelText();
-
         WriteConfig();
     }
 }
 
+void MainWindow::Copy()
+{
+
+}
+
+void MainWindow::MoveUp()
+{
+
+}
+
+void MainWindow::MoveDown()
+{
+
+}
+
+// start local proxy server
+void MainWindow::Start()
+{
+//    BoringCovid *boring = new BoringCovid();
+//    std::string address = ui->lineEdit_remote_address->text().toStdString();
+//    std::string password = ui->lineEdit_password->text().toStdString();
+//    std::thread my_thread(&BoringCovid::StartServer, boring);
+//    my_thread.detach();
+    qDebug() << "Server Started!!!";
+
+    ui->pushButton_start->setEnabled(false);
+    ui->pushButton_start->setText("running");
+    ui->pushButton_start->setStyleSheet("QPushButton {background-color: #A3C1DA; color: red;}");
+
+    hide();
+}
+
+// no need to do it
+void MainWindow::Stop()
+{
+    ui->pushButton_start->setEnabled(true);
+    ui->pushButton_start->setText("start");
+    ui->pushButton_start->setStyleSheet(styleSheet());
+    return;
+}
+
+// change remote address configure and restart local proxy server
+void MainWindow::Apply()
+{
+    qDebug() << "Apply Button Clicked.";
+    return;
+}
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-//    if(trayIcon->isVisible())
-//    {
-////        QMessageBox::information(this, tr("Systray"),
-////                                 tr("DDDDD"));
-//        hide();
-//        event->ignore();
-//    }
     hide();
     event->ignore();
 }
 
 void MainWindow::CreateActions()
 {
+    none = new QAction(tr("&none"), this);
+    // none system proxy
+    pac = new QAction(tr("&pac"), this);
+    // set system proxy to pac
+    global = new QAction(tr("&global"), this);
+    // set global proxy mode
+    // simple way to change registery
+
+    autoStartAction = new QAction(tr("&auto start"), this);
+    // change registery to set auto start setting
+    aboutAction = new QAction(tr("&about"), this);
+    // show about information
+
+    minimizeAction = new QAction(tr("&minimize"), this);
+    connect(minimizeAction, &QAction::triggered, this, &MainWindow::hide);
+
     restoreAction = new QAction(tr("&Restore"), this);
     connect(restoreAction, &QAction::triggered, this, &MainWindow::show);
 
     quitAction = new QAction(tr("&Quit"), this);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
+
+    autoStartAction->setCheckable(true);
 }
 
 void MainWindow::CreateTrayIcon()
 {
     trayIconMenu = new QMenu(this);
+    QMenu *systemProxyMenu = new QMenu("system proxy");
+    QMenu *ServerListsMenu = new QMenu("server list");
+	
+    trayIconMenu->addMenu(systemProxyMenu);
+    trayIconMenu->addMenu(ServerListsMenu);
 
+    QActionGroup *alignmentGroup = new QActionGroup(this);
+
+    alignmentGroup->addAction(none);
+    alignmentGroup->addAction(pac);
+    alignmentGroup->addAction(global);
+
+    none->setCheckable(true);
+    pac->setCheckable(true);
+    global->setCheckable(true);
+
+    systemProxyMenu->addActions(alignmentGroup->actions());
+	
+    trayIconMenu->setStyleSheet("color: rgb(255, 0, 0)");
+
+	trayIconMenu->addAction(autoStartAction);
+	trayIconMenu->addAction(aboutAction);
+    trayIconMenu->addAction(minimizeAction);
     trayIconMenu->addAction(restoreAction);
+    trayIconMenu->addSeparator();
     trayIconMenu->addAction(quitAction);
 
     trayIcon = new QSystemTrayIcon(this);
@@ -160,33 +234,6 @@ void MainWindow::CreateTrayIcon()
     trayIcon->setIcon(icon);
     setWindowIcon(icon);
     trayIcon->setVisible(true);
-}
-
-
-void MainWindow::StartServer()
-{
-    BoringCovid *boring = new BoringCovid();
-    std::string address = ui->lineEdit_remote_address->text().toStdString();
-    std::string password = ui->lineEdit_password->text().toStdString();
-    std::thread my_thread(&BoringCovid::StartServer, boring);
-    my_thread.detach();
-
-    ui->pushButton_start->setEnabled(false);
-    ui->pushButton_start->setText("running");
-    ui->pushButton_start->setStyleSheet("QPushButton {background-color: #A3C1DA; color: red;}");
-}
-
-void MainWindow::CancelConfigure()
-{
-    ui->pushButton_start->setEnabled(true);
-    ui->pushButton_start->setText("start");
-    ui->pushButton_start->setStyleSheet(styleSheet());
-    return;
-}
-
-void MainWindow::ApplyConfigure()
-{
-    qDebug() << "this is a test";
-    return;
+    trayIcon->show();
 }
 
